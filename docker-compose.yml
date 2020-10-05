@@ -1,0 +1,26 @@
+version: "3"
+services:
+  web:
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    env_file: ".env"
+    volumes:
+      - ".:/var/www/html"
+      - "vendor:/var/www/html/vendor"
+    ports:
+      - "8080:80"
+    depends_on:
+      - "db"
+    restart: "always"
+  db:
+    image: "mysql:8"
+    env_file: ".env"
+    ports:
+      - "3306:3306"
+    restart: "always"
+volumes:
+  vendor:
